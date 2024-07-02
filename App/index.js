@@ -1,25 +1,24 @@
 // Filename: index.js
 // Combined code from all files
 
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const letters = ['A', 'B', 'C', 'D', 'E'];
 
 export default function App() {
     const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentLetterIndex((prevIndex) => (prevIndex + 1) % letters.length);
-        }, 2000); // Change letter every 2 seconds
-
-        return () => clearInterval(interval);
-    }, []);
+    const showNextLetter = () => {
+        setCurrentLetterIndex((prevIndex) => (prevIndex + 1) % letters.length);
+    };
 
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.letter}>{letters[currentLetterIndex]}</Text>
+            <TouchableOpacity style={styles.button} onPress={showNextLetter}>
+                <Text style={styles.buttonText}>Next Letter</Text>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 }
@@ -34,5 +33,15 @@ const styles = StyleSheet.create({
     letter: {
         fontSize: 100,
         fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    button: {
+        backgroundColor: '#007bff',
+        padding: 10,
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 20,
     },
 });
