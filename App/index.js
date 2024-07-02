@@ -1,53 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+// Filename: index.js
+// Combined code from all files
 
-const App = () => {
-  const fullText = 'Hi, this is Apply.\nCreating mobile apps is now as simple as typing text.\nJust input your idea and press APPLY, and our platform does the rest...';
-  const [displayedText, setDisplayedText] = useState('');
-  const [index, setIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
 
-  useEffect(() => {
-    if (isPaused) return;
+const letters = ['A', 'B', 'C', 'D', 'E'];
 
-    const interval = setInterval(() => {
-      setDisplayedText((prev) => prev + fullText[index]);
-      setIndex((prev) => {
-        if (prev === fullText.length - 1) {
-          setIsPaused(true);
-          setTimeout(() => {
-            setDisplayedText('');
-            setIndex(0);
-            setIsPaused(false);
-          }, 2000);
-          return 0;
-        }
-        return prev + 1;
-      });
-    }, 100);
+export default function App() {
+    const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
 
-    return () => clearInterval(interval);
-  }, [index, isPaused]);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentLetterIndex((prevIndex) => (prevIndex + 1) % letters.length);
+        }, 2000); // Change letter every 2 seconds
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{displayedText}</Text>
-    </View>
-  );
-};
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.letter}>{letters[currentLetterIndex]}</Text>
+        </SafeAreaView>
+    );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'black',
-    padding: 20,
-  },
-  text: {
-    color: 'white',
-    fontSize: 24,
-    fontFamily: 'monospace',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    letter: {
+        fontSize: 100,
+        fontWeight: 'bold',
+    },
 });
-
-export default App;
